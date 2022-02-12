@@ -4,11 +4,13 @@ namespace CompleteProject
 {
     public class EnemyManager : MonoBehaviour
     {
+        public DayNightSystem dayNight;
+        public Transform player;
         public PlayerHealth playerHealth;       // Reference to the player's heatlh.
         public GameObject enemy;                // The enemy prefab to be spawned.
         public float spawnTime = 3f;            // How long between each spawn.
         public Transform[] spawnPoints;         // An array of the spawn points this enemy can spawn from.
-
+        public Transform[] patrolPoints;        // patrols point given to behavior tree of enemy
 
         void Start ()
         {
@@ -30,7 +32,8 @@ namespace CompleteProject
             int spawnPointIndex = Random.Range (0, spawnPoints.Length);
 
             // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
-            Instantiate (enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation);
+            EnemyBehaviorTree enemyBehavior = Instantiate (enemy, spawnPoints[spawnPointIndex].position, spawnPoints[spawnPointIndex].rotation).GetComponent< EnemyBehaviorTree>();
+            enemyBehavior.InitializeEnemy(dayNight, player, patrolPoints);
         }
     }
 }
