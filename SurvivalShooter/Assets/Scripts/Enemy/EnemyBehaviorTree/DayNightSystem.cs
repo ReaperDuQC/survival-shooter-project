@@ -8,20 +8,19 @@ public class DayNightSystem : MonoBehaviour
     [SerializeField] float _nightDuration;
     [SerializeField] bool _isNight = false;
     [SerializeField] bool _useCycle = true;
-    float _currentDuration;
+    float minLightIntensity = 0;
+    float maxLightIntensity = 1.0f;
 
     void Update()
     {
         if (_useCycle)
         {
-            _currentDuration += Time.deltaTime;
-            float ratio = _currentDuration / _nightDuration;
-
-            if (ratio > 1f)
+            float lightIntensity = 0.5f + Mathf.Sin(Time.time * 2.0f * Mathf.PI / _nightDuration) / 2.0f;
+            if (_isNight != (lightIntensity < 0.3))
             {
-                _currentDuration = 0f;
                 _isNight = !_isNight;
             }
+            _light.intensity = Mathf.Lerp(minLightIntensity, maxLightIntensity, lightIntensity);
         }
     }
 
