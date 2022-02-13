@@ -14,7 +14,6 @@ public class DeadNode : Node
     {
         if (agent.enabled == true)
         { 
-            agent.isStopped = true;
             agent.enabled = false;
         }
         m_nodeState = NodeStates.SUCCESS;

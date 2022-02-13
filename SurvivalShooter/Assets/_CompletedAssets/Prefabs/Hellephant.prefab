@@ -10149,10 +10149,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   daynight: {fileID: 0}
   player: {fileID: 0}
-  damage: 2
-  m_distanceToChase: 12
-  m_distanceToAttack: 2
+  damage: 25
+  m_distanceToChase: 30
+  m_distanceToAttack: 2.5
   m_timeBetweenAttack: 1
+  m_distanceCrowding: 15
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &184534
 GameObject:
   m_ObjectHideFlags: 0

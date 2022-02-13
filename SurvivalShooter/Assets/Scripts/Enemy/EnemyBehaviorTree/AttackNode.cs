@@ -16,5 +16,4 @@ public class AttackNode : Node
         health.TakeDamage(damage);
         return NodeStates.SUCCESS;
     }
-
 }

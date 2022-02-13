@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class DayNightSystem : MonoBehaviour
 {
+    [SerializeField] Light _light;
+    [SerializeField] float _nightDuration;
     [SerializeField] bool _isNight = false;
     [SerializeField] bool _useCycle = true;
-    [SerializeField] float _nightDuration;
     float _currentDuration;
-    [SerializeField] Light _light;
 
     void Update()
     {

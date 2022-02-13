@@ -7,11 +7,11 @@ public class IsTargetInRange : Node
     Transform origin;
     Transform target;
     float distance;
-    public IsTargetInRange(Transform o,Transform t, float d)
+    public IsTargetInRange(Transform origin,Transform target, float distance)
     {
-        origin = o;
-        target = t;
-        distance = d;
+        this.origin = origin;
+        this.target = target;
+        this.distance = distance;
     }
     public override NodeStates Evaluate()
     {

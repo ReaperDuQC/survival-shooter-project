@@ -7,7 +7,7 @@ public class IsAttackReadyNode : Node
     bool isReady;
     float lastAttackTime;
     float timeBetweenAttack;
-    int attackCount;
+
     public IsAttackReadyNode(float timeBetweenAttack) 
     {
         this.timeBetweenAttack = timeBetweenAttack; 
@@ -21,7 +21,6 @@ public class IsAttackReadyNode : Node
 
         if(m_nodeState == NodeStates.SUCCESS)
         {
-            Debug.Log("Number Of Attack " + ++attackCount);
             lastAttackTime = Time.time;
         }
         return m_nodeState;

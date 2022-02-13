@@ -14,6 +14,8 @@ public class EnemyBehaviorTree : MonoBehaviour
     [SerializeField] float m_distanceToChase;
     [SerializeField] float m_distanceToAttack;
     [SerializeField] float m_timeBetweenAttack;
+    [SerializeField] float m_distanceCrowding;
+    [SerializeField] LayerMask layerMask;
 
     public Selector m_rootNode;
     public Sequence m_deadNode;
@@ -21,11 +23,12 @@ public class EnemyBehaviorTree : MonoBehaviour
     public Sequence m_attackNode;
     public Sequence m_chaseNode;
     public Sequence m_patrolNode;
-  
+
     private void Update()
     {
         m_rootNode.Evaluate();
     }
+
     public void InitializeEnemy(DayNightSystem daynight, Transform player, Transform[] patrolPoints)
     {
         this.daynight = daynight;
@@ -59,9 +62,14 @@ public class EnemyBehaviorTree : MonoBehaviour
         m_attackNode = new Sequence(attackChildren);
 
         IsTargetInRange isPlayerInChaseRange = new IsTargetInRange(transform, player, m_distanceToChase);
-        ChaseNode chaseNode = new ChaseNode(agent, player);
+        IsAnyEnemyInRangeChasingNode isCrowding = new IsAnyEnemyInRangeChasingNode(transform, player, m_distanceCrowding, m_distanceCrowding, layerMask.value);
         List<Node> chaseChildren = new List<Node>();
-        chaseChildren.Add(isPlayerInChaseRange);
+        List<Node> chaseSeletorChildren = new List<Node>();
+        chaseSeletorChildren.Add(isPlayerInChaseRange);
+        chaseSeletorChildren.Add(isCrowding);
+        Selector chaseSelector = new Selector(chaseSeletorChildren);
+        ChaseNode chaseNode = new ChaseNode(agent, player);
+        chaseChildren.Add(chaseSelector);
         chaseChildren.Add(chaseNode);
         m_chaseNode = new Sequence(chaseChildren);
 
