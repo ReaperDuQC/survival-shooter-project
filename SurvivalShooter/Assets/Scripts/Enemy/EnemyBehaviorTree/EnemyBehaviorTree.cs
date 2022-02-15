@@ -18,12 +18,12 @@ public class EnemyBehaviorTree : MonoBehaviour
     [SerializeField] Transform player;
     Transform[] patrolPoints;
 
-    [SerializeField] int damage = 0;
+    [SerializeField] LayerMask layerMask;
     [SerializeField] float m_distanceToChase;
     [SerializeField] float m_distanceToAttack;
     [SerializeField] float m_timeBetweenAttack;
     [SerializeField] float m_distanceCrowding;
-    [SerializeField] LayerMask layerMask;
+    [SerializeField] int damage = 0;
 
     public Selector m_rootNode;
     public Sequence m_deadNode;
@@ -31,6 +31,10 @@ public class EnemyBehaviorTree : MonoBehaviour
     public Sequence m_attackNode;
     public Sequence m_chaseNode;
     public Sequence m_patrolNode;
+
+    private void Start()
+    {
+    }
 
     private void Update()
     {
@@ -43,6 +47,7 @@ public class EnemyBehaviorTree : MonoBehaviour
         this.player = player;
         this.patrolPoints = patrolPoints;
 
+        Animator animator = GetComponent<Animator>();
         NavMeshAgent agent = GetComponent<NavMeshAgent>();
         CompleteProject.PlayerHealth health = player.GetComponent<CompleteProject.PlayerHealth>();
 
@@ -56,7 +61,7 @@ public class EnemyBehaviorTree : MonoBehaviour
 
         // Sleep Sequence
         IsNightNode isNightNode = new IsNightNode(daynight);
-        SleepNode sleepNode = new SleepNode(agent);
+        SleepNode sleepNode = new SleepNode(agent, animator);
         List<Node> sleepChildren = new List<Node>();
         sleepChildren.Add(isNightNode);
         sleepChildren.Add(sleepNode);
@@ -80,13 +85,13 @@ public class EnemyBehaviorTree : MonoBehaviour
         chaseSeletorChildren.Add(isPlayerInChaseRange);
         chaseSeletorChildren.Add(isCrowding);
         Selector chaseSelector = new Selector(chaseSeletorChildren);
-        ChaseNode chaseNode = new ChaseNode(agent, player);
+        ChaseNode chaseNode = new ChaseNode(agent, animator, player);
         chaseChildren.Add(chaseSelector);
         chaseChildren.Add(chaseNode);
         m_chaseNode = new Sequence(chaseChildren);
 
         // Patrol Sequence
-        PatrolNode patrolNode = new PatrolNode(agent, patrolPoints);
+        PatrolNode patrolNode = new PatrolNode(agent, animator, patrolPoints);
         List<Node> patrolChildren = new List<Node>();
         patrolChildren.Add(patrolNode);
         m_patrolNode = new Sequence(patrolChildren);
